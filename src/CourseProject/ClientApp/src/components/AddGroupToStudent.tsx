@@ -66,7 +66,7 @@ export default function AddGroupToStudent() {
 
           const result = response.json();
           console.log(result);
-          if (response.status == 200) navigate("/");
+          if (response.status == 200) navigate("/EditCurrentUser");
           else navigate("/SignUp");
   };
 

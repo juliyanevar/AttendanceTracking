@@ -189,8 +189,7 @@ function AuditoriumType() {
                   }),
               }}
               options={{
-                sorting: true,
-                grouping: true
+                sorting: true
               }}
             />
           </Grid>

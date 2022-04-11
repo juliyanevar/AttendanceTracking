@@ -13,14 +13,6 @@ import "./NavMenu.css";
 import Button from "@material-ui/core/Button";
 import { useNavigate } from "react-router-dom";
 
-async function signout() {
-  await fetch(process.env.REACT_APP_API + "account/Logout", {
-    method: "POST",
-  });
-  localStorage.removeItem("username");
-  localStorage.removeItem("rolename");
-  window.location.reload();
-}
 
 export default class NavMenu extends React.PureComponent<
   {},
@@ -62,7 +54,7 @@ export default class NavMenu extends React.PureComponent<
 
     return (
       <header>
-        <Navbar
+         <Navbar
           id="navbar"
           className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
           light
@@ -79,7 +71,7 @@ export default class NavMenu extends React.PureComponent<
             >
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/">
+                  <NavLink tag={Link} className="text-dark" to="/Home">
                     Home
                   </NavLink>
                 </NavItem>
@@ -93,74 +85,9 @@ export default class NavMenu extends React.PureComponent<
                       <NavLink
                         tag={Link}
                         className="text-dark"
-                        to="/Teachers"
+                        to="/AdminPage"
                       >
-                        Teachers List
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        tag={Link}
-                        className="text-dark"
-                        to="/Students"
-                      >
-                        Students List
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        tag={Link}
-                        className="text-dark"
-                        to="/Attendance"
-                      >
-                        Attendance
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/Faculty">
-                        Faculty
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/Pulpit">
-                        Pulpit
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        tag={Link}
-                        className="text-dark"
-                        to="/Profession"
-                      >
-                        Profession
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/Group">
-                        Group
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        tag={Link}
-                        className="text-dark"
-                        to="/AuditoriumType"
-                      >
-                        Auditorium Type
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        tag={Link}
-                        className="text-dark"
-                        to="/Auditorium"
-                      >
-                        Auditorium
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/Subject">
-                        Subject
+                        Administartion Page
                       </NavLink>
                     </NavItem>
                   </Collapse>
@@ -211,7 +138,7 @@ export default class NavMenu extends React.PureComponent<
                     isOpen={this.state.isOpen}
                     navbar
                   >
-                  <NavItem>
+                  {/* <NavItem>
                     <Button
                       onClick={signout}
                       variant="text"
@@ -219,7 +146,12 @@ export default class NavMenu extends React.PureComponent<
                     >
                       Sing Out
                     </Button>
-                  </NavItem>
+                  </NavItem> */}
+                   <NavItem>
+                      <NavLink tag={Link} className="text-dark" to="/SignOut">
+                        Sign Out
+                      </NavLink>
+                    </NavItem>
                   <NavItem>
                       <NavLink tag={Link} className="text-dark" to="/EditCurrentUser">
                         Profile
@@ -238,7 +170,7 @@ export default class NavMenu extends React.PureComponent<
                       </NavLink>
                     </NavItem>
                     <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/SignIn">
+                      <NavLink tag={Link} className="text-dark" to="/">
                         Sign In
                       </NavLink>
                     </NavItem>
@@ -248,7 +180,7 @@ export default class NavMenu extends React.PureComponent<
             </Collapse>
           </Container>
         </Navbar>
-      </header>
+      </header >
     );
   }
 

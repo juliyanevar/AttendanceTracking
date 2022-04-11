@@ -15,6 +15,7 @@ namespace CourseProject.Repository.Interfaces
         IProfessionRepository Profession { get; }
         IPulpitRepository Pulpit { get; }
         ISubjectRepository Subject { get; }
+        IUniversityRepository University { get; }
 
         void Save();
     }

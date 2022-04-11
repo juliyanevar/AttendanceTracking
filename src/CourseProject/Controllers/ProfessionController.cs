@@ -49,12 +49,30 @@ namespace CourseProject.Controllers
         }
 
 
-        [HttpGet("facultyName")]
-        [Route("GetProfessionNamesByFaculty")]
-        public async Task<IActionResult> GetProfessionNamesByFaculty(string facultyName)
+        [HttpGet]
+        [Route("GetUniversityNames")]
+        public async Task<IActionResult> GetUniversityNames()
         {
-            var faculty = await _repositoryWrapper.Faculty.FindFirstByConditionAsync(x => x.Name.Equals(facultyName));
-            var result = await _repositoryWrapper.Profession.FindByConditionAsync(x=>x.FacultyId.Equals(faculty.Id));
+            var result = await _repositoryWrapper.Faculty.FindAllAsync();
+            var result1 = new List<string>();
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Id.Equals(item.UniversityId));
+                    result1.Add(university.Name);
+                }
+                return new JsonResult(result1.Distinct());
+            }
+            return NotFound();
+        }
+
+        [HttpGet("universityName")]
+        [Route("GetFacultyNamesByUniversity")]
+        public async Task<IActionResult> GetFacultyNames(string universityName)
+        {
+            var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Name.Equals(universityName));
+            var result = await _repositoryWrapper.Faculty.FindByConditionAsync(x => x.UniversityId.Equals(university.Id));
             var result1 = new List<string>();
             if (result != null)
             {
@@ -67,18 +85,18 @@ namespace CourseProject.Controllers
             return NotFound();
         }
 
-        [HttpGet]
-        [Route("GetFacultyNames")]
-        public async Task<IActionResult> GetFacultyNames()
+        [HttpGet("facultyName")]
+        [Route("GetProfessionNamesByFaculty")]
+        public async Task<IActionResult> GetProfessionNamesByFaculty(string facultyName)
         {
-            var result = await _repositoryWrapper.Profession.FindAllAsync();
+            var faculty = await _repositoryWrapper.Faculty.FindFirstByConditionAsync(x => x.Name.Equals(facultyName));
+            var result = await _repositoryWrapper.Profession.FindByConditionAsync(x => x.FacultyId.Equals(faculty.Id));
             var result1 = new List<string>();
             if (result != null)
             {
                 foreach (var item in result)
                 {
-                    var faculty = await _repositoryWrapper.Faculty.FindFirstByConditionAsync(x => x.Id.Equals(item.FacultyId));
-                    result1.Add(faculty.Name);
+                    result1.Add(item.Name);
                 }
                 return new JsonResult(result1.Distinct());
             }

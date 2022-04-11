@@ -23,5 +23,6 @@ namespace CourseProject.Models
         public DbSet<Profession> Profession { get; set; }
         public DbSet<Pulpit> Pulpit { get; set; }
         public DbSet<Subject> Subject { get; set; }
+        public DbSet<University> University { get; set; }
     }
 }

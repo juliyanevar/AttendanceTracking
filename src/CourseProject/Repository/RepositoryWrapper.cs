@@ -18,6 +18,7 @@ namespace CourseProject.Repository
         private IProfessionRepository _profession;
         private IPulpitRepository _pulpit;
         private ISubjectRepository _subject;
+        private IUniversityRepository _university;
 
         public IAttendanceRepository Attendance
         {
@@ -112,6 +113,18 @@ namespace CourseProject.Repository
                     _subject = new SubjectRepository(_applicationContext);
                 }
                 return _subject;
+            }
+        }
+
+        public IUniversityRepository University
+        {
+            get
+            {
+                if (_university == null)
+                {
+                    _university = new UniversityRepository(_applicationContext);
+                }
+                return _university;
             }
         }
 

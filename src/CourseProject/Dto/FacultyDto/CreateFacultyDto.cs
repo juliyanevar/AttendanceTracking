@@ -8,5 +8,6 @@ namespace CourseProject.Dto.FacultyDto
     public class CreateFacultyDto
     {
         public string Name { get; set; }
+        public string UniversityName { get; set; }
     }
 }

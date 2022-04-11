@@ -71,7 +71,7 @@ export default function SignIn() {
         localStorage.setItem("rolename", data.roleName);
         window.location.reload();
       });
-      navigate("/");
+      navigate("/Home");
       } else
     { setErrorMessages(["Cannot sign in. Wrong email and password!"])
         setIserror(true)}

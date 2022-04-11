@@ -9,6 +9,8 @@ namespace CourseProject.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public Guid  UniversityId { get; set; }
+        public University University { get; set; }
 
         public ICollection<Pulpit> Pulpits { get; set; }
         public ICollection<Profession> Professions { get; set; }

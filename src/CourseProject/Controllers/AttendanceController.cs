@@ -19,18 +19,32 @@ namespace CourseProject.Controllers
     {
         private IRepositoryWrapper _repositoryWrapper;
         private readonly UserManager<User> _userManager;
+        RoleManager<IdentityRole> _roleManager;
 
-        public AttendanceController(IRepositoryWrapper repositoryWrapper, UserManager<User> userManager)
+        public AttendanceController(IRepositoryWrapper repositoryWrapper, RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
         {
             _repositoryWrapper = repositoryWrapper;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
         [Route("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _repositoryWrapper.Attendance.FindAllAsync();
+            var currentUser = this.User;
+            var user = await _userManager.GetUserAsync(currentUser);
+            var roleList = await _userManager.GetRolesAsync(user);
+            var role = roleList.FirstOrDefault();
+            IEnumerable<Attendance> result = null;
+            if (role == "admin")
+            {
+                result = await _repositoryWrapper.Attendance.FindAllAsync();
+            }
+            else if (role == "teacher")
+            {
+                result = await _repositoryWrapper.Attendance.FindByConditionAsync(x=>x.UserTeacherId.Equals(user.Id));
+            }
             var result1 = new List<UpdateAttendanceDto>();
             if (result != null)
             {

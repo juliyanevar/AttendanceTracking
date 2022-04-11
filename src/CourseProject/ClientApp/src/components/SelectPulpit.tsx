@@ -23,13 +23,22 @@ const api = axios.create({
     }),
   );
 
-export default function SelectFaculty() {
+export default function SelectPulpit() {
     const classes = useStyles();
+
+  const [university, setUniversity] = React.useState<string>('');
+  const [universities, setUniversities] = React.useState<string[]>([]);
+
   const [faculty, setFaculty] = React.useState<string>('');
   const [faculties, setFaculties] = React.useState<string[]>([]);
 
   const [pulpit, setPulpit] = React.useState<string>('');
   const [pulpits, setPulpits] = React.useState<string[]>([]);
+
+  const handleChangeUniversity = (event: React.ChangeEvent<{value : unknown}>) => {
+    setUniversity(event.target.value as string);
+    fetchDataFaculty(event.target.value as string);
+  };
   
   const handleChangeFaculty = (event: React.ChangeEvent<{value : unknown}>) => {
     setFaculty(event.target.value as string);
@@ -39,6 +48,17 @@ export default function SelectFaculty() {
   const handleChangPulpit = (event: React.ChangeEvent<{value : unknown}>) => {
     setPulpit(event.target.value as string);
   };
+
+  async function fetchDataFaculty(university1:string) {
+    try {
+      console.log({UniversityName:university1});
+      const res = await api.get("GetFacultyNamesByUniversity?universityName="+university1);
+      console.log(res.data);
+      setFaculties(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  } 
 
   async function fetchDataPulpit(faculty1:string) {
       try {
@@ -53,21 +73,40 @@ export default function SelectFaculty() {
 
 
   useEffect( () => { 
-    async function fetchDataFaculty() {
-      try {
-        const res = await api.get("GetFacultyNames");
-        
-        setFaculties(res.data);
-      } catch (err) {
+    async function fetchDataUniversity(){
+      try{
+        const res = await api.get("GetUniversityNames");
+
+        setUniversities(res.data);
+      }catch(err){
         console.log(err);
       }
-    }     
-     
-    fetchDataFaculty();
+    }
+
+    fetchDataUniversity();
     }, []);
 
   return (
     <Box sx={{ minWidth: 120 }}>
+        <FormControl variant="filled" fullWidth className={classes.formControl}>
+        <InputLabel id="select-university-label">University</InputLabel>
+        <Select
+          labelId="select-university-label"
+          id="select-university"
+          value={university}
+          onChange={handleChangeUniversity}
+        >
+          {universities.map((university) => (
+            <MenuItem
+              key={university}
+              value={university}
+            >
+              {university}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <br/>
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-faculty-label1">Faculty</InputLabel>
         <Select

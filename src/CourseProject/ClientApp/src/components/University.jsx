@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
-import { alpha } from '@material-ui/core/styles'
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -47,15 +46,14 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API+'faculty/'
+  baseURL: process.env.REACT_APP_API+'university/'
 })
 
 function Faculty() {
 
   var columns = [
     {title: "id", field: "id", hidden: true},
-    {title: "Faculty name", field: "name"},
-    {title: "University", field: "universityName"}
+    {title: "University name", field: "name"}
   ]
   const [data, setData] = useState([]); //table data
 
@@ -77,14 +75,11 @@ function Faculty() {
     //validation
     let errorList = []
     if(newData.name === ""){
-      errorList.push("Please enter faculty name")
-    }
-    if(newData.universityName === ""){
       errorList.push("Please enter university name")
     }
 
     if(errorList.length < 1){
-      api.put("/update",{id:oldData.id, name:newData.name, universityName: newData.universityName})
+      api.put("/update",{id:oldData.id, name:newData.name})
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -113,14 +108,11 @@ function Faculty() {
     //validation
     let errorList = []
     if(newData.name === undefined){
-      errorList.push("Please enter faculty name")
-    }
-    if(newData.universityName === ""){
       errorList.push("Please enter university name")
     }
 
     if(errorList.length < 1){ //no error
-      api.post("create", {name:newData.name, universityName:newData.universityName})
+      api.post("create", {name:newData.name})
       .then(res => {
         let dataToAdd = [...data];
         dataToAdd.push(newData);
@@ -176,7 +168,7 @@ function Faculty() {
             }       
           </div>
             <MaterialTable
-              title="Faculties"
+              title="Universities"
               columns={columns}
               data={data}
               icons={tableIcons}
@@ -208,139 +200,3 @@ function Faculty() {
 }
 
 export default Faculty;
-
-
-
-
-
-
-
-
-
-// import React,{Component} from 'react';
-// import {Table} from 'react-bootstrap';
-// import {Button,ButtonToolbar} from 'react-bootstrap';
-// // import {AddDepModal} from './AddDepModal';
-// // import {EditDepModal} from './EditDepModal';
-
-// export interface faculty {
-//     id: string | undefined,
-//     name: string | undefined
-// }
-
-// export interface FacultyProps{
-
-// }
-
-// export interface FacultyState{
-//     faculties : faculty[],
-//     // facultyid?: string | undefined,
-//     // facultyname?: string | undefined,
-//     // addModalShow?: boolean,
-//     // editModalShow?: boolean
-// }
-
-// export class Faculty extends Component<FacultyProps, FacultyState>{
-
-//     constructor(props:FacultyProps){
-//         super(props);
-//         this.state={faculties:[]/*, addModalShow:false, editModalShow:false*/}
-//     }
-
-//     refreshList(){
-//         fetch(process.env.REACT_APP_API+'faculty/getall')
-//         .then(response=>response.json())
-//         .then(data=>{
-//             this.setState({faculties:data});
-//         });
-//     }
-
-//     componentDidMount(){
-//         this.refreshList();
-//     }
-
-//     componentDidUpdate(){
-//         this.refreshList();
-//     }
-
-//     // deleteDep(depid){
-//     //     if(window.confirm('Are you sure?')){
-//     //         fetch(process.env.REACT_APP_API+'department/'+depid,{
-//     //             method:'DELETE',
-//     //             header:{'Accept':'application/json',
-//     //         'Content-Type':'application/json'}
-//     //         })
-//     //     }
-//     // }
-//     render(){
-//         const {faculties}=this.state;
-//         // let addModalClose=()=>this.setState({addModalShow:false});
-//         // let editModalClose=()=>this.setState({editModalShow:false});
-//         return (
-//           <div>
-//             <Table className="mt-4" striped bordered hover size="sm">
-//               <thead>
-//                 <tr>
-//                   <th>Faculty Id</th>
-//                   <th>Faculty Name</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {faculties.map((faculty:faculty) => (
-//                   <tr key={faculty.name}>
-//                     <td>{faculty.id}</td>
-//                     <td>{faculty.name}</td>
-//                     <td>
-//                       <ButtonToolbar>
-//                         {/* <Button
-//                           className="mr-2"
-//                           variant="info"
-//                           onClick={() =>
-//                             this.setState({
-//                               editModalShow: true,
-//                               facultyid: faculty.facultyid,
-//                               facultyname: faculty.facultyname,
-//                             })
-//                           }
-//                         >
-//                           Edit
-//                         </Button> */}
-
-//                         {/* <Button
-//                           className="mr-2"
-//                           variant="danger"
-//                           onClick={() => this.deleteDep(dep.DepartmentId)}
-//                         >
-//                           Delete
-//                         </Button> */}
-
-//                         {/* <EditDepModal
-//                           show={this.state.editModalShow}
-//                           onHide={editModalClose}
-//                           depid={depid}
-//                           depname={depname}
-//                         /> */}
-//                       </ButtonToolbar>
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </Table>
-
-//             <ButtonToolbar>
-//               {/* <Button
-//                 variant="primary"
-//                 onClick={() => this.setState({ addModalShow: true })}
-//               >
-//                 Add Department
-//               </Button> */}
-
-//               {/* <AddDepModal
-//                 show={this.state.addModalShow}
-//                 onHide={addModalClose}
-//               /> */}
-//             </ButtonToolbar>
-//           </div>
-//         );
-//     }
-// }

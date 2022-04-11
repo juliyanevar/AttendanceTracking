@@ -28,12 +28,60 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _repositoryWrapper.Faculty.FindAllAsync();
+            var result1 = new List<UpdateFacultyDto>();
             if(result!=null)
             {
-                return new JsonResult(result);
+                foreach(var item in result)
+                {
+                    var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Id.Equals(item.UniversityId));
+                    var newFaculty = new UpdateFacultyDto
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        UniversityName = university.Name
+                    };
+                    result1.Add(newFaculty);
+                }
+                return new JsonResult(result1);
             }
             return NotFound();
         }
+
+        [HttpGet("universityName")]
+        [Route("GetFacultyNamesByUniversity")]
+        public async Task<IActionResult> GetFacultyNamesByUniversity(string universityName)
+        {
+            var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Name.Equals(universityName));
+            var result = await _repositoryWrapper.Faculty.FindByConditionAsync(x => x.UniversityId.Equals(university.Id));
+            var result1 = new List<string>();
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    result1.Add(item.Name);
+                }
+                return new JsonResult(result1.Distinct());
+            }
+            return NotFound();
+        }
+
+        //[HttpGet]
+        //[Route("GetFacultyNames")]
+        //public async Task<IActionResult> GetFacultyNames()
+        //{
+        //    var result = await _repositoryWrapper.Pulpit.FindAllAsync();
+        //    var result1 = new List<string>();
+        //    if (result != null)
+        //    {
+        //        foreach (var item in result)
+        //        {
+        //            var faculty = await _repositoryWrapper.Faculty.FindFirstByConditionAsync(x => x.Id.Equals(item.FacultyId));
+        //            result1.Add(faculty.Name);
+        //        }
+        //        return new JsonResult(result1.Distinct());
+        //    }
+        //    return NotFound();
+        //}
 
         [HttpPost]
         [Route("Create")]
@@ -41,10 +89,12 @@ namespace CourseProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Name.Equals(model.UniversityName));
                 var faculty = new Faculty
                 {
                     Id = Guid.NewGuid(),
-                    Name = model.Name
+                    Name = model.Name,
+                    University = university
                 };
                 await _repositoryWrapper.Faculty.CreateAsync(faculty);
                 return Ok(new Response { Status = "Success", Message = "Faculty created successfully" });
@@ -58,10 +108,12 @@ namespace CourseProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Name.Equals(model.UniversityName));
                 var faculty = new Faculty
                 {
                     Id = model.Id,
-                    Name = model.Name
+                    Name = model.Name,
+                    University = university
                 };
                 await _repositoryWrapper.Faculty.UpdateAsync(faculty);
                 return Ok(new Response { Status = "Success", Message = "Faculty update successfully" });
