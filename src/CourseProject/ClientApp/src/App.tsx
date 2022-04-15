@@ -24,7 +24,7 @@ import EditCurrentUser from "./components/EditCurrentUser";
 import University from "./components/University";
 import AdminPage from "./components/AdminPage";
 
-import "./custom.css";
+/*import "./custom.css";*/
 
 export default () => (
   <Layout>

@@ -53,7 +53,11 @@ function Faculty() {
 
   var columns = [
     {title: "id", field: "id", hidden: true},
-    {title: "University name", field: "name"}
+    {title: "University name", field: "name"},
+    {title: "Min Latitude", field: "minLatitude"},
+    {title: "Max Latitude", field: "maxLatitude"},
+    {title: "Min Longitude", field: "minLongitude"},
+    {title: "Max Longitude", field: "maxLongitude"}
   ]
   const [data, setData] = useState([]); //table data
 
@@ -63,7 +67,8 @@ function Faculty() {
 
   useEffect(() => { 
     api.get("getall")
-        .then(res => {             
+        .then(res => {       
+          console.log(res.data);      
             setData(res.data)
          })
          .catch(error=>{
@@ -77,9 +82,21 @@ function Faculty() {
     if(newData.name === ""){
       errorList.push("Please enter university name")
     }
+    if(newData.minLatitude === ""){
+      errorList.push("Please enter Min Latitude")
+    }
+    if(newData.maxLatitude === ""){
+      errorList.push("Please enter Max Latitude")
+    }
+    if(newData.minLongitude === ""){
+      errorList.push("Please enter Min Longitude")
+    }
+    if(newData.maxLongitude === ""){
+      errorList.push("Please enter Max Longitude")
+    }
 
     if(errorList.length < 1){
-      api.put("/update",{id:oldData.id, name:newData.name})
+      api.put("/update",{id:oldData.id, name:newData.name, minLatitude: newData.minLatitude, maxLatitude: newData.maxLatitude, minLongitude: newData.minLongitude, maxLongitude: newData.maxLongitude})
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -110,9 +127,21 @@ function Faculty() {
     if(newData.name === undefined){
       errorList.push("Please enter university name")
     }
+    if(newData.minLatitude === ""){
+      errorList.push("Please enter Min Latitude")
+    }
+    if(newData.maxLatitude === ""){
+      errorList.push("Please enter Max Latitude")
+    }
+    if(newData.minLongitude === ""){
+      errorList.push("Please enter Min Longitude")
+    }
+    if(newData.maxLongitude === ""){
+      errorList.push("Please enter Max Longitude")
+    }
 
     if(errorList.length < 1){ //no error
-      api.post("create", {name:newData.name})
+      api.post("create", {name:newData.name, minLatitude: newData.minLatitude, maxLatitude: newData.maxLatitude, minLongitude: newData.minLongitude, maxLongitude: newData.maxLongitude})
       .then(res => {
         let dataToAdd = [...data];
         dataToAdd.push(newData);

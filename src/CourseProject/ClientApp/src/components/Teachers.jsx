@@ -53,7 +53,7 @@ const api = axios.create({
 function Teachers() {
   var columns = [
     { title: "Id", field: "id", hidden: true },
-    { title: "Username", field: "userName"},
+    { title: "Username", field: "userName" },
     { title: "Email", field: "email" },
     { title: "First Name", field: "firstName" },
     { title: "Last Name", field: "lastName" },
@@ -111,62 +111,6 @@ function Teachers() {
     }
   };
 
-//   const handleRowAdd = (newData, resolve) => {
-//     //validation
-//     let errorList = [];
-//     if (newData.dateTime === "") {
-//       errorList.push("Please enter date");
-//     }
-//     if (newData.subjectName === "") {
-//       errorList.push("Please enter subject name");
-//     }
-//     if (newData.auditoriumName === "") {
-//       errorList.push("Please enter auditorium name");
-//     }
-//     if (newData.teacherUserName === "") {
-//       errorList.push("Please enter teacher username");
-//     }
-//     if (newData.studentUserName === "") {
-//       errorList.push("Please enter student username");
-//     }
-//     console.log({
-//           DateTime: newData.dateTime,
-//           SubjectName: newData.subjectName,
-//           AuditoriumName: newData.auditoriumName,
-//           TeacherUserName: newData.teacherUserName,
-//           StudentUserName: newData.studentUserName
-//     });
-
-//     if (errorList.length < 1) {
-//       //no error
-//       api
-//         .post("create", {
-//           DateTime: newData.dateTime,
-//           SubjectName: newData.subjectName,
-//           AuditoriumName: newData.auditoriumName,
-//           TeacherUserName: newData.teacherUserName,
-//           StudentUserName: newData.studentUserName
-//         })
-//         .then((res) => {
-//           let dataToAdd = [...data];
-//           dataToAdd.push(newData);
-//           setData(dataToAdd);
-//           resolve();
-//           setErrorMessages([]);
-//           setIserror(false);
-//         })
-//         .catch((error) => {
-//           setErrorMessages(["Cannot add data. Server error!"]);
-//           setIserror(true);
-//           resolve();
-//         });
-//     } else {
-//       setErrorMessages(errorList);
-//       setIserror(true);
-//       resolve();
-//     }
-//   };
-
   const handleRowDelete = (oldData, resolve) => {
     api
       .delete("Delete", {
@@ -210,10 +154,10 @@ function Teachers() {
                 new Promise((resolve) => {
                   handleRowUpdate(newData, oldData, resolve);
                 }),
-            //   onRowAdd: (newData) =>
-            //     new Promise((resolve) => {
-            //       handleRowAdd(newData, resolve);
-            //     }),
+              //   onRowAdd: (newData) =>
+              //     new Promise((resolve) => {
+              //       handleRowAdd(newData, resolve);
+              //     }),
               onRowDelete: (oldData) =>
                 new Promise((resolve) => {
                   handleRowDelete(oldData, resolve);
