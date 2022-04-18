@@ -41,7 +41,7 @@ export default function ButtonAttendance() {
 
     async function checkGeolocation() {
         let errorList = [];
-        if (localStorage.getItem('username') != null) {
+        //if (localStorage.getItem('username') != null) {
             navigator.geolocation.getCurrentPosition(position => {
                 setLat(position.coords.latitude);
                 setLon(position.coords.longitude);
@@ -66,10 +66,10 @@ export default function ButtonAttendance() {
                 setErrorMessages(["You are not at the University!"]);
                 setIserror(true);
             }
-        }
-        else {
-            navigate("/SignIn");
-        }
+        // }
+        // else {
+        //     navigate("/SignIn");
+        // }
 
     }
 
