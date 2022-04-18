@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Image from "material-ui-image";
 import SelectSubject from "./SelectSubject";
 import SelectAuditorium from "./SelectAuditorium";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Link from "@mui/material/Link";
 
@@ -27,7 +25,6 @@ function Copyright(props: any) {
     </Typography>
   );
 }
-const theme = createTheme();
 
 export default function GenerateQR() {
   const [pic, setPic] = useState(new Blob());
@@ -59,7 +56,6 @@ export default function GenerateQR() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <Container component="main">
         <CssBaseline />
         <Box
@@ -89,6 +85,7 @@ export default function GenerateQR() {
             >
               Generate
             </Button>
+            <br/>
             <img
               style={{ width: 500, height: 500 }}
               className="tc br3 center-block"
@@ -99,6 +96,5 @@ export default function GenerateQR() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
   );
 }

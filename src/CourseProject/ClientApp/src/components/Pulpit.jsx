@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
-import { alpha } from '@material-ui/core/styles'
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -176,6 +175,7 @@ function Pulpit() {
             }       
           </div>
             <MaterialTable
+              style={{backgroundColor:"#626262", color:"#fff"}}
               title="Pulpits"
               columns={columns}
               data={data}

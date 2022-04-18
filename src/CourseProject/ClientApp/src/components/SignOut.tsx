@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,9 +10,6 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { getUser } from "./getUser";
-import Alert from '@material-ui/lab/Alert';
-import axios from 'axios';
 
 function Copyright(props: any) {
     return (
@@ -26,7 +20,7 @@ function Copyright(props: any) {
         {...props}
       >
         {"Copyright © "}
-        <Link color="inherit" href="https://localhost:44337/">
+        <Link color="inherit" href="https://localhost:44337/home">
           My Website
         </Link>{" "}
         {new Date().getFullYear()}
@@ -40,7 +34,6 @@ function Copyright(props: any) {
 
 export default function SignOut() {
     const [iserror, setIserror] = React.useState(false)
-    const [errorMessages, setErrorMessages] = React.useState([''])
   
     const navigate = useNavigate();
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,7 +51,6 @@ export default function SignOut() {
     };
   
     return (
-      <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -91,7 +83,7 @@ export default function SignOut() {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
-                  <Link href="/" variant="body2">
+                  <Link href="/home" variant="body2">
                     {"Go back to the home page"}
                   </Link>
                 </Grid>
@@ -100,6 +92,5 @@ export default function SignOut() {
           </Box>
           <Copyright sx={{ mt: 8, mb: 4 }} />
         </Container>
-      </ThemeProvider>
     );
 }

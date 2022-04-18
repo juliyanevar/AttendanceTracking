@@ -50,6 +50,7 @@ export default function GetAuditoriumNames() {
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-auditorium-label">Auditorium</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-auditorium-label"
           id="select-auditorium"
           name="select-auditorium"

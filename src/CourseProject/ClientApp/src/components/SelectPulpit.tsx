@@ -91,6 +91,7 @@ export default function SelectPulpit() {
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-university-label">University</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-university-label"
           id="select-university"
           value={university}
@@ -110,6 +111,7 @@ export default function SelectPulpit() {
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-faculty-label1">Faculty</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-faculty-label1"
           id="select-faculty1"
           value={faculty}
@@ -129,6 +131,7 @@ export default function SelectPulpit() {
        <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-pulpit-label">Pulpit</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-pulpit-label"
           id="select-pulpit"
           name = "select-pulpit"

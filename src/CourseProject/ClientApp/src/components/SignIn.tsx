@@ -4,15 +4,12 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { getUser } from "./getUser";
 import Alert from '@material-ui/lab/Alert';
 
@@ -34,7 +31,6 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
 
 export default function SignIn() {
   const [iserror, setIserror] = React.useState(false)
@@ -72,83 +68,82 @@ export default function SignIn() {
         window.location.reload();
       });
       navigate("/Home");
-      } else
-    { setErrorMessages(["Cannot sign in. Wrong email and password!"])
-        setIserror(true)}
+    } else {
+      setErrorMessages(["Cannot sign in. Wrong email and password!"])
+      setIserror(true)
+    }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
         <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+          component="form"
+          onSubmit={handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="Username"
-              label="Email"
-              name="Username"
-              autoComplete="Username"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="Password"
-              label="Password"
-              type="Password"
-              id="Password"
-              autoComplete="current-password"
-            />
-            <div>
-            {iserror && 
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="Username"
+            label="Email"
+            name="Username"
+            autoComplete="Username"
+            autoFocus
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="Password"
+            label="Password"
+            type="Password"
+            id="Password"
+            autoComplete="current-password"
+          />
+          <div>
+            {iserror &&
               <Alert severity="error">
-                  {errorMessages.map((msg, i) => {
-                      return <div key={i}>{msg}</div>
-                  })}
+                {errorMessages.map((msg, i) => {
+                  return <div key={i}>{msg}</div>
+                })}
               </Alert>
-            }       
+            }
           </div>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/SignUp" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign In
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              <Link href="/SignUp" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
             </Grid>
-          </Box>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+      </Box>
+      <Copyright sx={{ mt: 8, mb: 4 }} />
+    </Container>
   );
 }

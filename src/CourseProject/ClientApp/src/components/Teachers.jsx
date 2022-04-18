@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
 import Grid from "@material-ui/core/Grid";
-import { alpha } from "@material-ui/core/styles";
 
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -145,6 +144,7 @@ function Teachers() {
             )}
           </div>
           <MaterialTable
+            style={{backgroundColor:"#626262", color:"#fff"}}
             title="Teachers list"
             columns={columns}
             data={data}
@@ -154,10 +154,6 @@ function Teachers() {
                 new Promise((resolve) => {
                   handleRowUpdate(newData, oldData, resolve);
                 }),
-              //   onRowAdd: (newData) =>
-              //     new Promise((resolve) => {
-              //       handleRowAdd(newData, resolve);
-              //     }),
               onRowDelete: (oldData) =>
                 new Promise((resolve) => {
                   handleRowDelete(oldData, resolve);

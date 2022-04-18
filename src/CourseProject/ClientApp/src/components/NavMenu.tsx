@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React from "react";
 import {
   Collapse,
   Container,
@@ -9,9 +9,7 @@ import {
   NavLink,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import "./NavMenu.css";
-import Button from "@material-ui/core/Button";
-import { useNavigate } from "react-router-dom";
+// import "./NavMenu.css";
 
 
 export default class NavMenu extends React.PureComponent<
@@ -57,10 +55,10 @@ export default class NavMenu extends React.PureComponent<
          <Navbar
           id="navbar"
           className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
-          light
-        >
+          dark
+          >
           <Container>
-            <NavbarBrand tag={Link} to="/">
+            <NavbarBrand tag={Link} to="/home">
               Attendance tracking
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} className="mr-2" />
@@ -70,11 +68,6 @@ export default class NavMenu extends React.PureComponent<
               navbar
             >
               <ul className="navbar-nav flex-grow">
-                <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/Home">
-                    Home
-                  </NavLink>
-                </NavItem>
                 {showAdmin && (
                   <Collapse
                     className="d-sm-inline-flex flex-sm-row-reverse"
@@ -84,7 +77,7 @@ export default class NavMenu extends React.PureComponent<
                     <NavItem>
                       <NavLink
                         tag={Link}
-                        className="text-dark"
+                        className="text-light"
                         to="/AdminPage"
                       >
                         Administartion Page
@@ -102,7 +95,7 @@ export default class NavMenu extends React.PureComponent<
                     <NavItem>
                       <NavLink
                         tag={Link}
-                        className="text-dark"
+                        className="text-light"
                         to="/Attendance"
                       >
                         Attendance
@@ -111,7 +104,7 @@ export default class NavMenu extends React.PureComponent<
                     <NavItem>
                       <NavLink
                         tag={Link}
-                        className="text-dark"
+                        className="text-light"
                         to="/GenerateQR"
                       >
                         Generate QR-code
@@ -124,7 +117,7 @@ export default class NavMenu extends React.PureComponent<
                   <NavItem>
                     <NavLink
                       tag={Link}
-                      className="text-dark"
+                      className="text-light"
                       to="/ButtonAttendance"
                     >
                       Attendance
@@ -138,25 +131,21 @@ export default class NavMenu extends React.PureComponent<
                     isOpen={this.state.isOpen}
                     navbar
                   >
-                  {/* <NavItem>
-                    <Button
-                      onClick={signout}
-                      variant="text"
-                      className="text-dark"
-                    >
-                      Sing Out
-                    </Button>
-                  </NavItem> */}
                    <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/SignOut">
+                      <NavLink tag={Link} className="text-light" to="/SignOut">
                         Sign Out
                       </NavLink>
                     </NavItem>
                   <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/EditCurrentUser">
+                      <NavLink tag={Link} className="text-light" to="/EditCurrentUser">
                         Profile
                       </NavLink>
                     </NavItem>
+                    <NavItem>
+                  <NavLink tag={Link} className="text-light" to="/Home">
+                    Home
+                  </NavLink>
+                </NavItem>
                   </Collapse>
                 ) : (
                   <Collapse
@@ -165,12 +154,12 @@ export default class NavMenu extends React.PureComponent<
                     navbar
                   >
                     <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/SignUp">
+                      <NavLink tag={Link} className="text-light" to="/SignUp">
                         Sign Up
                       </NavLink>
                     </NavItem>
                     <NavItem>
-                      <NavLink tag={Link} className="text-dark" to="/">
+                      <NavLink tag={Link} className="text-light" to="/">
                         Sign In
                       </NavLink>
                     </NavItem>

@@ -25,6 +25,10 @@ const api = axios.create({
 
 export default function SelectSubject() {
     const classes = useStyles();
+
+    const [university, setUniversity] = React.useState<string>('');
+    const [universities, setUniversities] = React.useState<string[]>([]);
+
   const [faculty, setFaculty] = React.useState<string>('');
   const [faculties, setFaculties] = React.useState<string[]>([]);
 
@@ -34,6 +38,11 @@ export default function SelectSubject() {
   const [subject, setSubject] = React.useState<string>('');
   const [subjects, setSubjects] = React.useState<string[]>([]);
   
+  const handleChangeUniversity = (event: React.ChangeEvent<{value : unknown}>) => {
+    setUniversity(event.target.value as string);
+    fetchDataFaculty(event.target.value as string);
+  };
+
   const handleChangeFaculty = (event: React.ChangeEvent<{value : unknown}>) => {
     setFaculty(event.target.value as string);
     fetchDataPulpit(event.target.value as string);
@@ -47,6 +56,17 @@ export default function SelectSubject() {
   const handleChangeSubject = (event: React.ChangeEvent<{value : unknown}>) => {
     setSubject(event.target.value as string);
   };
+
+  async function fetchDataFaculty(university1:string) {
+    try {
+      console.log({UniversityName:university1});
+      const res = await api.get("pulpit/GetFacultyNamesByUniversity?universityName="+university1);
+      console.log(res.data);
+      setFaculties(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  } 
 
   async function fetchDataPulpit(faculty1:string) {
       try {
@@ -72,24 +92,45 @@ export default function SelectSubject() {
 
 
   useEffect( () => { 
-    async function fetchDataFaculty() {
+    async function fetchDataUniversity() {
       try {
-        const res = await api.get("pulpit/GetFacultyNames");
+        const res = await api.get("pulpit/GetUniversityNames");
         
-        setFaculties(res.data);
+        setUniversities(res.data);
       } catch (err) {
         console.log(err);
       }
     }     
      
-    fetchDataFaculty();
+    fetchDataUniversity();
     }, []);
 
   return (
     <Box sx={{ minWidth: 400 }}>
+      <FormControl variant="filled" fullWidth className={classes.formControl}>
+        <InputLabel id="select-university-label">University</InputLabel>
+        <Select
+          style={{color:"#fff"}}
+          labelId="select-university-label"
+          id="select-university"
+          value={university}
+          onChange={handleChangeUniversity}
+        >
+          {universities.map((university) => (
+            <MenuItem
+              key={university}
+              value={university}
+            >
+              {university}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      <br/>
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-faculty-label1">Faculty</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-faculty-label1"
           id="select-faculty1"
           value={faculty}
@@ -109,6 +150,7 @@ export default function SelectSubject() {
        <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-pulpit-label">Pulpit</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-pulpit-label"
           id="select-pulpit"
           name = "select-pulpit"
@@ -129,6 +171,7 @@ export default function SelectSubject() {
        <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-subject-label">Subject</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-subject-label"
           id="select-subject"
           name = "select-subject"

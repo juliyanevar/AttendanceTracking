@@ -47,15 +47,15 @@ const tableIcons = {
 };
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API+'profession/'
+  baseURL: process.env.REACT_APP_API + 'profession/'
 })
 
 function Profession() {
 
   var columns = [
-    {title: "id", field: "id", hidden: true},
-    {title: "Profession name", field: "name"},
-    {title: "Faculty", field:"facultyName"}
+    { title: "id", field: "id", hidden: true },
+    { title: "Profession name", field: "name" },
+    { title: "Faculty", field: "facultyName" }
   ]
   const [data, setData] = useState([]); //table data
 
@@ -63,92 +63,92 @@ function Profession() {
   const [iserror, setIserror] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
-  useEffect(() => { 
+  useEffect(() => {
     api.get("getall")
-        .then(res => {             
-            setData(res.data)
-         })
-         .catch(error=>{
-             console.log("Error")
-         })
+      .then(res => {
+        setData(res.data)
+      })
+      .catch(error => {
+        console.log("Error")
+      })
   }, [])
 
   const handleRowUpdate = (newData, oldData, resolve) => {
     //validation
     let errorList = []
-    if(newData.name === ""){
+    if (newData.name === "") {
       errorList.push("Please enter profession name")
     }
-    if(newData.facultyName === ""){
-        errorList.push("Please enter faculty name")
-      }
+    if (newData.facultyName === "") {
+      errorList.push("Please enter faculty name")
+    }
 
-    
-    if(errorList.length < 1){
-      api.put("/update",{id:oldData.id, name:newData.name, facultyName:newData.facultyName})
-      .then(res => {
-        const dataUpdate = [...data];
-        const index = oldData.tableData.id;
-        dataUpdate[index] = newData;
-        setData([...dataUpdate]);
-        resolve()
-        setIserror(false)
-        setErrorMessages([])
-      })
-      .catch(error => {
-        setErrorMessages(["Update failed! Server error"])
-        setIserror(true)
-        resolve()
-        
-      })
-    }else{
+
+    if (errorList.length < 1) {
+      api.put("/update", { id: oldData.id, name: newData.name, facultyName: newData.facultyName })
+        .then(res => {
+          const dataUpdate = [...data];
+          const index = oldData.tableData.id;
+          dataUpdate[index] = newData;
+          setData([...dataUpdate]);
+          resolve()
+          setIserror(false)
+          setErrorMessages([])
+        })
+        .catch(error => {
+          setErrorMessages(["Update failed! Server error"])
+          setIserror(true)
+          resolve()
+
+        })
+    } else {
       setErrorMessages(errorList)
       setIserror(true)
       resolve()
 
     }
-    
+
   }
 
   const handleRowAdd = (newData, resolve) => {
     //validation
     let errorList = []
-    if(newData.name === undefined){
-        console.log({name:newData.name,facultyName:newData.facultyName});
+    if (newData.name === undefined) {
+      console.log({ name: newData.name, facultyName: newData.facultyName });
       errorList.push("Please enter profession name")
     }
-    if(newData.facultyName === undefined){
-        errorList.push("Please enter faculty name")
-      }
+    if (newData.facultyName === undefined) {
+      errorList.push("Please enter faculty name")
+    }
 
-      console.log({name:newData.name,facultyName:newData.facultyName});
+    console.log({ name: newData.name, facultyName: newData.facultyName });
 
-    if(errorList.length < 1){ //no error
-      api.post("create", {name:newData.name,facultyName:newData.facultyName})
-      .then(res => {
-        let dataToAdd = [...data];
-        dataToAdd.push(newData);
-        setData(dataToAdd);
-        resolve()
-        setErrorMessages([])
-        setIserror(false)
-      })
-      .catch(error => {
-        setErrorMessages(["Cannot add data. Server error!"])
-        setIserror(true)
-        resolve()
-      })
-    }else{
+    if (errorList.length < 1) { //no error
+      api.post("create", { name: newData.name, facultyName: newData.facultyName })
+        .then(res => {
+          let dataToAdd = [...data];
+          dataToAdd.push(newData);
+          setData(dataToAdd);
+          resolve()
+          setErrorMessages([])
+          setIserror(false)
+        })
+        .catch(error => {
+          setErrorMessages(["Cannot add data. Server error!"])
+          setIserror(true)
+          resolve()
+        })
+    } else {
       setErrorMessages(errorList)
       setIserror(true)
       resolve()
     }
 
-    
+
   }
 
   const handleRowDelete = (oldData, resolve) => {
-    api.delete("Delete",{ data: {id: oldData.id}, headers: {"Content-Type": "application/json"}})
+    api.delete("Delete", { data: { id: oldData.id }, headers: { "Content-Type": "application/json" } })
       .then(res => {
         const dataDelete = [...data];
         const index = oldData.tableData.id;
@@ -166,47 +166,47 @@ function Profession() {
 
   return (
     <div className="App">
-      
       <Grid container spacing={1}>
-          <Grid item xs={1}></Grid>
-          <Grid item xs={9}>
+        <Grid item xs={1}></Grid>
+        <Grid item xs={9}>
           <div>
-            {iserror && 
+            {iserror &&
               <Alert severity="error">
-                  {errorMessages.map((msg, i) => {
-                      return <div key={i}>{msg}</div>
-                  })}
+                {errorMessages.map((msg, i) => {
+                  return <div key={i}>{msg}</div>
+                })}
               </Alert>
-            }       
+            }
           </div>
-            <MaterialTable
-              title="Professions"
-              columns={columns}
-              data={data}
-              icons={tableIcons}
-              editable={{
-                onRowUpdate: (newData, oldData) =>
-                  new Promise((resolve) => {
-                      handleRowUpdate(newData, oldData, resolve);
-                      
-                  }),
-                onRowAdd: (newData) =>
-                  new Promise((resolve) => {
-                    handleRowAdd(newData, resolve)
-                  }),
-                onRowDelete: (oldData) =>
-                  new Promise((resolve) => {
-                    handleRowDelete(oldData, resolve)
-                  }),
-              }}
-              options={{
-                sorting: true,
-                grouping: true
-              }}
-            />
-          </Grid>
-          <Grid item xs={1}></Grid>
+          <MaterialTable
+            style={{backgroundColor:"#626262", color:"#fff"}}
+            title="Professions"
+            columns={columns}
+            data={data}
+            icons={tableIcons}
+            editable={{
+              onRowUpdate: (newData, oldData) =>
+                new Promise((resolve) => {
+                  handleRowUpdate(newData, oldData, resolve);
+
+                }),
+              onRowAdd: (newData) =>
+                new Promise((resolve) => {
+                  handleRowAdd(newData, resolve)
+                }),
+              onRowDelete: (oldData) =>
+                new Promise((resolve) => {
+                  handleRowDelete(oldData, resolve)
+                }),
+            }}
+            options={{
+              sorting: true,
+              grouping: true
+            }}
+          />
         </Grid>
+        <Grid item xs={1}></Grid>
+      </Grid>
     </div>
   );
 }

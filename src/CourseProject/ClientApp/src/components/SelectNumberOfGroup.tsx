@@ -50,6 +50,7 @@ export default function SelectNumberOfGroup() {
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-group-label">Group</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-group-label"
           id="select-group"
           name="select-group"

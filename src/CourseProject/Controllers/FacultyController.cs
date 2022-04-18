@@ -65,24 +65,6 @@ namespace CourseProject.Controllers
             return NotFound();
         }
 
-        //[HttpGet]
-        //[Route("GetFacultyNames")]
-        //public async Task<IActionResult> GetFacultyNames()
-        //{
-        //    var result = await _repositoryWrapper.Pulpit.FindAllAsync();
-        //    var result1 = new List<string>();
-        //    if (result != null)
-        //    {
-        //        foreach (var item in result)
-        //        {
-        //            var faculty = await _repositoryWrapper.Faculty.FindFirstByConditionAsync(x => x.Id.Equals(item.FacultyId));
-        //            result1.Add(faculty.Name);
-        //        }
-        //        return new JsonResult(result1.Distinct());
-        //    }
-        //    return NotFound();
-        //}
-
         [HttpPost]
         [Route("Create")]
         public async Task<IActionResult> Create([FromBody] CreateFacultyDto model)

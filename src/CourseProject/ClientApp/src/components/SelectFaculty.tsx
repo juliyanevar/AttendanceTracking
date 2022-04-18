@@ -91,6 +91,7 @@ export default function SelectFaculty() {
       <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-university-label">University</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-university-label"
           id="select-university"
           value={university}
@@ -110,6 +111,7 @@ export default function SelectFaculty() {
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-faculty-label">Faculty</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-faculty-label"
           id="select-faculty"
           value={faculty}
@@ -129,6 +131,7 @@ export default function SelectFaculty() {
        <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-profession-label">Profession</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-profession-label"
           id="select-profession"
           name = "select-profession"

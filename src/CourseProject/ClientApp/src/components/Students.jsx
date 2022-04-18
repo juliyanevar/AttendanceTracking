@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
 import Grid from "@material-ui/core/Grid";
-import { alpha } from "@material-ui/core/styles";
 
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -125,61 +124,6 @@ function Students() {
     }
   };
 
-//   const handleRowAdd = (newData, resolve) => {
-//     //validation
-//     let errorList = [];
-//     if (newData.dateTime === "") {
-//       errorList.push("Please enter date");
-//     }
-//     if (newData.subjectName === "") {
-//       errorList.push("Please enter subject name");
-//     }
-//     if (newData.auditoriumName === "") {
-//       errorList.push("Please enter auditorium name");
-//     }
-//     if (newData.teacherUserName === "") {
-//       errorList.push("Please enter teacher username");
-//     }
-//     if (newData.studentUserName === "") {
-//       errorList.push("Please enter student username");
-//     }
-//     console.log({
-//           DateTime: newData.dateTime,
-//           SubjectName: newData.subjectName,
-//           AuditoriumName: newData.auditoriumName,
-//           TeacherUserName: newData.teacherUserName,
-//           StudentUserName: newData.studentUserName
-//     });
-
-//     if (errorList.length < 1) {
-//       //no error
-//       api
-//         .post("create", {
-//           DateTime: newData.dateTime,
-//           SubjectName: newData.subjectName,
-//           AuditoriumName: newData.auditoriumName,
-//           TeacherUserName: newData.teacherUserName,
-//           StudentUserName: newData.studentUserName
-//         })
-//         .then((res) => {
-//           let dataToAdd = [...data];
-//           dataToAdd.push(newData);
-//           setData(dataToAdd);
-//           resolve();
-//           setErrorMessages([]);
-//           setIserror(false);
-//         })
-//         .catch((error) => {
-//           setErrorMessages(["Cannot add data. Server error!"]);
-//           setIserror(true);
-//           resolve();
-//         });
-//     } else {
-//       setErrorMessages(errorList);
-//       setIserror(true);
-//       resolve();
-//     }
-//   };
 
   const handleRowDelete = (oldData, resolve) => {
     api
@@ -215,6 +159,7 @@ function Students() {
             )}
           </div>
           <MaterialTable
+            style={{backgroundColor:"#626262", color:"#fff"}}
             title="Students list"
             columns={columns}
             data={data}
@@ -224,10 +169,6 @@ function Students() {
                 new Promise((resolve) => {
                   handleRowUpdate(newData, oldData, resolve);
                 }),
-            //   onRowAdd: (newData) =>
-            //     new Promise((resolve) => {
-            //       handleRowAdd(newData, resolve);
-            //     }),
               onRowDelete: (oldData) =>
                 new Promise((resolve) => {
                   handleRowDelete(oldData, resolve);

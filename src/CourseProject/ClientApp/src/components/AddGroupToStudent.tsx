@@ -12,11 +12,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import SelectCourse from './SelectCourse';
 import SelectNumberOfGroup from './SelectNumberOfGroup';
 import SelectFaculty from './SelectFaculty';
@@ -34,9 +29,6 @@ function Copyright(props: any) {
   );
 }
 
-
-
-const theme = createTheme();
 
 export default function AddGroupToStudent() {
     const navigate = useNavigate();
@@ -71,7 +63,6 @@ export default function AddGroupToStudent() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -119,6 +110,5 @@ export default function AddGroupToStudent() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
   );
 }

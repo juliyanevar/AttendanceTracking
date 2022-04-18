@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
 import Grid from "@material-ui/core/Grid";
-import { alpha } from "@material-ui/core/styles";
 
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -21,6 +20,7 @@ import Search from "@material-ui/icons/Search";
 import ViewColumn from "@material-ui/icons/ViewColumn";
 import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
+
 
 const tableIcons = {
   Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
@@ -217,6 +217,7 @@ function Attendance() {
             )}
           </div>
           <MaterialTable
+            style={{backgroundColor:"#626262", color:"#fff"}}
             title="Attendance"
             columns={columns}
             data={data}

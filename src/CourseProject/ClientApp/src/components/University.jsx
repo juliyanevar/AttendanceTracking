@@ -197,6 +197,7 @@ function Faculty() {
             }       
           </div>
             <MaterialTable
+              style={{backgroundColor:"#626262", color:"#fff"}}
               title="Universities"
               columns={columns}
               data={data}

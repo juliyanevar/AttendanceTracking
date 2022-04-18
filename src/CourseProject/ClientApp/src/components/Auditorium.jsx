@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
 import Grid from "@material-ui/core/Grid";
-import { alpha } from "@material-ui/core/styles";
 
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -129,9 +128,9 @@ function Auditorium() {
       errorList.push("Please enter auditorium type name");
     }
     console.log({
-          name: newData.name,
-          capacity: newData.capacity,
-          auditoriumTypeName: newData.auditoriumTypeName
+      name: newData.name,
+      capacity: newData.capacity,
+      auditoriumTypeName: newData.auditoriumTypeName
     });
 
     if (errorList.length < 1) {
@@ -196,6 +195,7 @@ function Auditorium() {
             )}
           </div>
           <MaterialTable
+            style={{ backgroundColor: "#626262", color: "#fff" }}
             title="Auditoriums"
             columns={columns}
             data={data}

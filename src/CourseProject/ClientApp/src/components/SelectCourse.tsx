@@ -50,6 +50,7 @@ export default function SelectCourse() {
         <FormControl variant="filled" fullWidth className={classes.formControl}>
         <InputLabel id="select-course-label">Course</InputLabel>
         <Select
+          style={{color:"#fff"}}
           labelId="select-course-label"
           name = "select-course"
           id="select-course"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
-import { alpha } from '@material-ui/core/styles'
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -185,6 +184,7 @@ function Group() {
             }       
           </div>
             <MaterialTable
+              style={{backgroundColor:"#626262", color:"#fff"}}
               title="Groups"
               columns={columns}
               data={data}
