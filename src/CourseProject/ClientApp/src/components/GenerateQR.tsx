@@ -38,7 +38,7 @@ export default function GenerateQR() {
       AuditoriumName: data.get("select-auditorium"),
     };
     console.log(data);
-    const response = await fetch(process.env.REACT_APP_API + "QR/create", {
+    const response = await fetch("https://localhost:44337/api/QR/create", {
       method: "POST",
       body: JSON.stringify(requestData),
       headers: {
