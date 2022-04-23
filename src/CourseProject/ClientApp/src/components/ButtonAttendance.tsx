@@ -29,10 +29,11 @@ export default function ButtonAttendance() {
     useEffect(() => {
         api.get("GetCurrentUniversity")
             .then(res => {
-                setMinLatitude(+res.data.minLatitude);
-                setMaxLatitude(+res.data.maxLatitude);
-                setMinLongitude(+res.data.setMinLongitude);
-                setMaxLongitude(+res.data.maxLongitude);
+                setMinLatitude(res.data.minLatitude);
+                setMaxLatitude(res.data.maxLatitude);
+                setMinLongitude(res.data.setMinLongitude);
+                setMaxLongitude(res.data.maxLongitude);
+                console.log(res.data.minLatitude);
             })
             .catch(error => {
                 console.log("Error")
