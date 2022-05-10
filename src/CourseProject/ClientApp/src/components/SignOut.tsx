@@ -47,7 +47,7 @@ export default function SignOut() {
         localStorage.removeItem("rolename");
         window.location.reload();
       });
-      navigate("/");
+      /*navigate("/");*/
     };
   
     return (
