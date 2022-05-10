@@ -37,7 +37,7 @@ namespace CourseProject.Controllers
             var subject = await _repositoryWrapper.Subject.FindFirstByConditionAsync(x => x.Name.Equals(model.SubjectName));
             var date = DateTime.Now;
             var teacher = await _userManager.GetUserAsync(this.User);
-            var strPathAndQuery = "https://"+HttpContext.Request.Host+"/ButtonAttendance?subjectId="+subject.Id+"&AuditoriumName="+model.AuditoriumName+"&Date="+date+"&teacher="+teacher.UserName;
+            var strPathAndQuery = "https://"+HttpContext.Request.Host+"/ButtonAttendance?subjectId="+subject.Id+"&subjectName="+subject.Name+"&AuditoriumName="+model.AuditoriumName+"&Date="+date+"&teacher="+teacher.UserName;
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(strPathAndQuery, QRCodeGenerator.ECCLevel.Q);
             QRCode qrCode = new QRCode(qrCodeData);

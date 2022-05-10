@@ -13,6 +13,7 @@ export default function ButtonAttendance() {
     const search = useLocation().search;
 
     const SubjectId = new URLSearchParams(search).get('subjectId');
+    const SubjectName = new URLSearchParams(search).get('subjectName');
     const AuditoriumName = new URLSearchParams(search).get('AuditoriumName');
     const DateTime = new URLSearchParams(search).get('Date');
     const TeacherName = new URLSearchParams(search).get('teacher');
@@ -46,6 +47,7 @@ export default function ButtonAttendance() {
             navigator.geolocation.getCurrentPosition(position => {
                 setLat(position.coords.latitude);
                 setLon(position.coords.longitude);
+                console.log(position.coords);
             });
             if (lat < maxLatitude && lat > minLatitude && lon < maxLongitude && lon > minLongitude) {
                 const requestData = {
@@ -76,6 +78,10 @@ export default function ButtonAttendance() {
 
     return (
         <div className="d-grid gap-2 text-center">
+            <p>Subject: {SubjectName}</p>
+            <p>Date and Time: {DateTime}</p>
+            <p>Auditorium: {AuditoriumName}</p>
+            <p>Teacher: {TeacherName}</p>
             <Button onClick={checkGeolocation} variant="contained" color="primary" size="large">
                 I'm here!
             </Button>
