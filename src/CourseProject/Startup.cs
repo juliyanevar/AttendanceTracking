@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using CourseProject.Repository.Interfaces;
 using CourseProject.Repository;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace CourseProject
 {
@@ -53,7 +55,7 @@ namespace CourseProject
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {

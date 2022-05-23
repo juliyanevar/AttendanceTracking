@@ -29,6 +29,31 @@ namespace CourseProject.Controllers
         {
             var result = await _repositoryWrapper.Faculty.FindAllAsync();
             var result1 = new List<UpdateFacultyDto>();
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Id.Equals(item.UniversityId));
+                    var newFaculty = new UpdateFacultyDto
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        UniversityName = university.Name
+                    };
+                    result1.Add(newFaculty);
+                }
+                return new JsonResult(result1);
+            }
+            return NotFound();
+        }
+
+        [HttpGet("universityName")]
+        [Route("GetByUniversity")]
+        public async Task<IActionResult> GetByUniversity(string universityName)
+        {
+            var university1 = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Name.Equals(universityName));
+            var result = await _repositoryWrapper.Faculty.FindByConditionAsync(x=>x.UniversityId.Equals(university1.Id));
+            var result1 = new List<UpdateFacultyDto>();
             if(result!=null)
             {
                 foreach(var item in result)
@@ -46,6 +71,7 @@ namespace CourseProject.Controllers
             }
             return NotFound();
         }
+
 
         [HttpGet("universityName")]
         [Route("GetFacultyNamesByUniversity")]

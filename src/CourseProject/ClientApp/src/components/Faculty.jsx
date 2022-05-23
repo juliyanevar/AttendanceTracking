@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
+import { useLocation, useNavigate } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -18,6 +19,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import ReadMoreOutlinedIcon from '@mui/icons-material/ReadMoreOutlined';
 import axios from 'axios';
 import Alert from '@material-ui/lab/Alert';
 
@@ -50,26 +52,43 @@ const api = axios.create({
 })
 
 function Faculty() {
+  const navigate = useNavigate();
+  const search = useLocation().search;
+  var UniversityName = new URLSearchParams(search).get('universityName');
 
   var columns = [
     { title: "id", field: "id", hidden: true },
     { title: "Faculty name", field: "name" },
-    { title: "University", field: "universityName" }
+    { title: "University", field: "universityName", editable: 'never' }
   ]
   const [data, setData] = useState([]); //table data
+  const [university, setUniversity] = useState(''); //table data
 
   //for error handling
   const [iserror, setIserror] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => {
-    api.get("getall")
+    UniversityName = new URLSearchParams(search).get('universityName');
+     if(UniversityName=="" || UniversityName==null){
+      api.get("getall")
       .then(res => {
         setData(res.data)
       })
       .catch(error => {
         console.log("Error")
       })
+    }
+    else{
+      api.get("GetByUniversity?universityName="+UniversityName)
+      .then(res => {
+        setData(res.data)
+      })
+      .catch(error => {
+        console.log("Error")
+      })
+    }
+    
   }, [])
 
   const handleRowUpdate = (newData, oldData, resolve) => {
@@ -78,12 +97,12 @@ function Faculty() {
     if (newData.name === "") {
       errorList.push("Please enter faculty name")
     }
-    if (newData.universityName === "") {
+    if (UniversityName === "") {
       errorList.push("Please enter university name")
     }
 
     if (errorList.length < 1) {
-      api.put("/update", { id: oldData.id, name: newData.name, universityName: newData.universityName })
+      api.put("/update", { id: oldData.id, name: newData.name, universityName: UniversityName })
         .then(res => {
           const dataUpdate = [...data];
           const index = oldData.tableData.id;
@@ -114,12 +133,12 @@ function Faculty() {
     if (newData.name === undefined) {
       errorList.push("Please enter faculty name")
     }
-    if (newData.universityName === "") {
+    if (UniversityName === "") {
       errorList.push("Please enter university name")
     }
 
     if (errorList.length < 1) { //no error
-      api.post("create", { name: newData.name, universityName: newData.universityName })
+      api.post("create", { name: newData.name, universityName: UniversityName })
         .then(res => {
           let dataToAdd = [...data];
           dataToAdd.push(newData);
@@ -194,6 +213,13 @@ function Faculty() {
                   handleRowDelete(oldData, resolve)
                 }),
             }}
+            actions={[
+              {
+                icon: () => <ReadMoreOutlinedIcon />,
+                tooltip: 'More',
+                onClick: (event, rowData) => navigate("/PulpitProfession?facultyName="+rowData.name+"&facultyId="+rowData.id)
+              }
+            ]}
             options={{
               sorting: true,
               grouping: true

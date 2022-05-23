@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
 import { alpha } from '@material-ui/core/styles'
+import { useLocation, useNavigate } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -19,6 +20,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import ReadMoreOutlinedIcon from '@mui/icons-material/ReadMoreOutlined';
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
 
@@ -51,11 +53,14 @@ const api = axios.create({
 })
 
 function Profession() {
-
+  const navigate = useNavigate();
+  const search = useLocation().search;
+  var FacultyId = new URLSearchParams(search).get('facultyId');
+  var FacultyName = new URLSearchParams(search).get('facultyName');
   var columns = [
     { title: "id", field: "id", hidden: true },
     { title: "Profession name", field: "name" },
-    { title: "Faculty", field: "facultyName" }
+    { title: "Faculty", field: "facultyName", editable:"never" }
   ]
   const [data, setData] = useState([]); //table data
 
@@ -64,13 +69,26 @@ function Profession() {
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => {
-    api.get("getall")
-      .then(res => {
-        setData(res.data)
-      })
-      .catch(error => {
-        console.log("Error")
-      })
+    FacultyId = new URLSearchParams(search).get('facultyId');
+    if(FacultyId === "" || FacultyId === null)
+    {
+      api.get("getall")
+        .then(res => {             
+            setData(res.data)
+         })
+         .catch(error=>{
+             console.log("Error")
+         })
+    }
+    else{
+      api.get("getByFaculty?facultyId="+FacultyId)
+        .then(res => {             
+            setData(res.data)
+         })
+         .catch(error=>{
+             console.log("Error")
+         })
+    }
   }, [])
 
   const handleRowUpdate = (newData, oldData, resolve) => {
@@ -79,13 +97,13 @@ function Profession() {
     if (newData.name === "") {
       errorList.push("Please enter profession name")
     }
-    if (newData.facultyName === "") {
+    if (FacultyName === "") {
       errorList.push("Please enter faculty name")
     }
 
 
     if (errorList.length < 1) {
-      api.put("/update", { id: oldData.id, name: newData.name, facultyName: newData.facultyName })
+      api.put("/update", { id: oldData.id, name: newData.name, facultyName: FacultyName })
         .then(res => {
           const dataUpdate = [...data];
           const index = oldData.tableData.id;
@@ -114,17 +132,15 @@ function Profession() {
     //validation
     let errorList = []
     if (newData.name === undefined) {
-      console.log({ name: newData.name, facultyName: newData.facultyName });
       errorList.push("Please enter profession name")
     }
-    if (newData.facultyName === undefined) {
+    if (FacultyName === undefined) {
       errorList.push("Please enter faculty name")
     }
 
-    console.log({ name: newData.name, facultyName: newData.facultyName });
 
     if (errorList.length < 1) { //no error
-      api.post("create", { name: newData.name, facultyName: newData.facultyName })
+      api.post("create", { name: newData.name, facultyName: FacultyName })
         .then(res => {
           let dataToAdd = [...data];
           dataToAdd.push(newData);
@@ -199,6 +215,13 @@ function Profession() {
                   handleRowDelete(oldData, resolve)
                 }),
             }}
+            actions={[
+              {
+                icon: () => <ReadMoreOutlinedIcon />,
+                tooltip: 'Groups',
+                onClick: (event, rowData) => navigate("/Group?professionName="+rowData.name+"&professionId="+rowData.id)
+              }
+            ]}
             options={{
               sorting: true,
               grouping: true

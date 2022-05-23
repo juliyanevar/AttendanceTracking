@@ -47,6 +47,30 @@ namespace CourseProject.Controllers
             return NotFound();
         }
 
+        [HttpGet("pulpitId")]
+        [Route("GetByPulpit")]
+        public async Task<IActionResult> GetByPulpit(Guid pulpitId)
+        {
+            var result = await _repositoryWrapper.Subject.FindByConditionAsync(x=>x.PulpitId.Equals(pulpitId));
+            var result1 = new List<UpdateSubjectDto>();
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    var pulpit = await _repositoryWrapper.Pulpit.FindFirstByConditionAsync(x => x.Id.Equals(item.PulpitId));
+                    var newSubject = new UpdateSubjectDto
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        PulpitName = pulpit.Name
+                    };
+                    result1.Add(newSubject);
+                }
+                return new JsonResult(result1);
+            }
+            return NotFound();
+        }
+
         [HttpGet("pulpitName")]
         [Route("GetSubjectNamesByPulpit")]
         public async Task<IActionResult> GetSubjectNamesByPulpit(string pulpitName)

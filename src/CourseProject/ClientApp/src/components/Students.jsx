@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
 import Grid from "@material-ui/core/Grid";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -50,6 +51,9 @@ const api = axios.create({
 });
 
 function Students() {
+  const search = useLocation().search;
+  var GroupId = new URLSearchParams(search).get('groupId');
+
   var columns = [
     { title: "Id", field: "id", hidden: true },
     { title: "Username", field: "userName", editable: 'never'},
@@ -67,7 +71,9 @@ function Students() {
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
-    api
+    GroupId = new URLSearchParams(search).get('groupId');
+    if(GroupId === "" || GroupId === null){
+      api
       .get("GetStudents")
       .then((res) => {
         console.log(res.data);
@@ -76,6 +82,18 @@ function Students() {
       .catch((error) => {
         console.log("Error");
       });
+    }
+    else{
+      api
+      .get("GetStudentsByGroup?groupId="+GroupId)
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+      })
+      .catch((error) => {
+        console.log("Error");
+      });
+    }
   }, []);
 
   const handleRowUpdate = (newData, oldData, resolve) => {

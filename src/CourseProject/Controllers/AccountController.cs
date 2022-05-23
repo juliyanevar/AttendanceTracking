@@ -42,6 +42,21 @@ namespace CourseProject.Controllers
             return null;
         }
 
+        [Route("GetCurrentPulpit")]
+        public async Task<IActionResult> GetCurrentPulpit()
+        {
+            var user = await _userManager.GetUserAsync(this.User);
+            if (user != null)
+            {
+                var pulpit = await _repositoryWrapper.Pulpit.FindFirstByConditionAsync(x => x.Id.Equals(user.PulpitId));
+                var faculty = await _repositoryWrapper.Faculty.FindFirstByConditionAsync(x=>x.Id.Equals(pulpit.FacultyId));
+                var university = await _repositoryWrapper.University.FindFirstByConditionAsync(x => x.Id.Equals(faculty.UniversityId));
+                var result = new CurrentPulpitDto { UniversityName=university.Name, FacultyName=faculty.Name, PulpitName=pulpit.Name };
+                return new JsonResult(result);
+            }
+            return null;
+        }
+
         [HttpPut]
         [Route("UpdateUserInfo")]
         public async Task<IActionResult> UpdateUserInfo([FromBody] UpdateUserInfoDto model)
@@ -59,7 +74,6 @@ namespace CourseProject.Controllers
             }
             return Ok(new Response { Status = "Success", Message = "User update successfully" });
         }
-
 
         [HttpPut]
         [Route("UpdateStudent")]
@@ -149,6 +163,40 @@ namespace CourseProject.Controllers
             return new JsonResult(students);
         }
 
+        [HttpGet("groupId")]
+        [Route("GetStudentsByGroup")]
+        public async Task<IActionResult> GetStudentsByGroup(Guid groupId)
+        {
+            var users = _userManager.Users.ToList();
+            List<GetStudentsDto> students = new List<GetStudentsDto>();
+            foreach (var item in users)
+            {
+                var roleList = await _userManager.GetRolesAsync(item);
+                var roleName = roleList.FirstOrDefault();
+                if (roleName == "student")
+                {
+                    if (item.GroupId == groupId)
+                    {
+                        var group = await _repositoryWrapper.Group.FindFirstByConditionAsync(x => x.Id.Equals(item.GroupId));
+                        var profession = await _repositoryWrapper.Profession.FindFirstByConditionAsync(x => x.Id.Equals(group.ProfessionId));
+                        var student = new GetStudentsDto
+                        {
+                            Id = item.Id,
+                            UserName = item.UserName,
+                            Email = item.Email,
+                            FirstName = item.FirstName,
+                            LastName = item.LastName,
+                            GroupNumber = group.Number.ToString(),
+                            Course = group.Course.ToString(),
+                            ProfessionName = profession.Name
+                        };
+                        students.Add(student);
+                    }
+                }
+            }
+            return new JsonResult(students);
+        }
+
         [HttpGet]
         [Route("GetTeachers")]
         public async Task<IActionResult> GetTeachers()
@@ -172,6 +220,37 @@ namespace CourseProject.Controllers
                         PulpitName = pulpit.Name
                     };
                     teachers.Add(teacher);
+                }
+            }
+            return new JsonResult(teachers);
+        }
+
+        [HttpGet("pulpitId")]
+        [Route("GetTeachersByPuplpit")]
+        public async Task<IActionResult> GetTeachersByPuplpit(Guid pulpitId)
+        {
+            var users = _userManager.Users.ToList();
+            List<GetTeacherDto> teachers = new List<GetTeacherDto>();
+            foreach (var item in users)
+            {
+                var roleList = await _userManager.GetRolesAsync(item);
+                var roleName = roleList.FirstOrDefault();
+                if (roleName == "teacher")
+                {
+                    if (item.PulpitId == pulpitId)
+                    {
+                        var pulpit = await _repositoryWrapper.Pulpit.FindFirstByConditionAsync(x => x.Id.Equals(item.PulpitId));
+                        var teacher = new GetTeacherDto
+                        {
+                            Id = item.Id,
+                            UserName = item.UserName,
+                            Email = item.Email,
+                            FirstName = item.FirstName,
+                            LastName = item.LastName,
+                            PulpitName = pulpit.Name
+                        };
+                        teachers.Add(teacher);
+                    }
                 }
             }
             return new JsonResult(teachers);

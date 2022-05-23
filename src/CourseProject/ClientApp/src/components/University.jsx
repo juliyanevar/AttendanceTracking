@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
+import { useNavigate } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -18,6 +19,8 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import ReadMoreOutlinedIcon from '@mui/icons-material/ReadMoreOutlined';
+
 import axios from 'axios';
 import Alert from '@material-ui/lab/Alert';
 
@@ -50,6 +53,8 @@ const api = axios.create({
 })
 
 function Faculty() {
+
+  const navigate = useNavigate();
 
   var columns = [
     {title: "id", field: "id", hidden: true},
@@ -180,6 +185,9 @@ function Faculty() {
       })
   }
 
+  // const handleFacultyAdd = (oldData, resolve) => {
+  //   navigate("/Faculty?universityName="+oldData.name);
+  // }
 
   return (
     <div className="App">
@@ -216,7 +224,18 @@ function Faculty() {
                   new Promise((resolve) => {
                     handleRowDelete(oldData, resolve)
                   }),
+                // onFacultyAdd: (oldData) => 
+                //   new Promise((resolve) => {
+                //     handleFacultyAdd(oldData, resolve)
+                //   }),
               }}
+              actions={[
+                {
+                  icon: () => <ReadMoreOutlinedIcon />,
+                  tooltip: 'Faculties',
+                  onClick: (event, rowData) => navigate("/Faculty?universityName="+rowData.name)
+                }
+              ]}
               options={{
                 sorting: true,
                 grouping: true

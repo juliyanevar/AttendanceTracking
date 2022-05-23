@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
+import { useLocation, useNavigate } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -18,6 +19,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import ReadMoreOutlinedIcon from '@mui/icons-material/ReadMoreOutlined';
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
 
@@ -52,12 +54,16 @@ const api = axios.create({
 })
 
 function Group() {
+  const navigate = useNavigate();
+  const search = useLocation().search;
+  var ProfessionName = new URLSearchParams(search).get('professionName');
+  var ProfessionId = new URLSearchParams(search).get('professionId');
 
   var columns = [
     {title: "Id", field: "id", hidden: true},
     {title: "Number", field: "number"},
     {title: "Course", field:"course"},
-    {title: "Profession name", field: "professionName"}
+    {title: "Profession name", field: "professionName", editable:"never"}
   ]
   const [data, setData] = useState([]); //table data
 
@@ -66,13 +72,25 @@ function Group() {
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => { 
-    api.get("getall")
+    ProfessionId = new URLSearchParams(search).get('professionId');
+    if(ProfessionId==="" || ProfessionId === null){
+      api.get("getall")
         .then(res => {             
             setData(res.data)
          })
          .catch(error=>{
              console.log("Error")
          })
+    }
+    else{
+      api.get("GetByProfession?professionId="+ProfessionId)
+        .then(res => {             
+            setData(res.data)
+         })
+         .catch(error=>{
+             console.log("Error")
+         })
+    }
   }, [])
 
   const handleRowUpdate = (newData, oldData, resolve) => {
@@ -84,12 +102,12 @@ function Group() {
     if(newData.course === ""){
         errorList.push("Please enter course")
       }
-    if(newData.professionName === ""){
+    if(ProfessionName === ""){
         errorList.push("Please enter profession name")
       }
 
     if(errorList.length < 1){
-      api.put("/update",{id:oldData.id, number:newData.number, course:newData.course, professionName: newData.professionName})
+      api.put("/update",{id:oldData.id, number:newData.number, course:newData.course, professionName: ProfessionName})
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -123,13 +141,12 @@ function Group() {
     if(newData.course === ""){
           errorList.push("Please enter course")
       }
-     if(newData.professionName === ""){
+     if(ProfessionName === ""){
        errorList.push("Please enter profession name");
      }
-     console.log({Number:newData.number, Course:newData.course, ProfessionName: newData.professionName});
 
     if(errorList.length < 1){ //no error
-      api.post("create", {Number:newData.number, Course:newData.course, ProfessionName: newData.professionName})
+      api.post("create", {Number:newData.number, Course:newData.course, ProfessionName: ProfessionName})
       .then(res => {
         let dataToAdd = [...data];
         dataToAdd.push(newData);
@@ -204,6 +221,13 @@ function Group() {
                     handleRowDelete(oldData, resolve)
                   }),
               }}
+              actions={[
+                {
+                  icon: () => <ReadMoreOutlinedIcon />,
+                  tooltip: 'Students',
+                  onClick: (event, rowData) => navigate("/Students?groupId="+rowData.id)
+                }
+              ]}
               options={{
                 sorting: true,
                 grouping: true

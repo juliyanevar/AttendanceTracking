@@ -23,6 +23,8 @@ import Teachers from "./components/Teachers";
 import EditCurrentUser from "./components/EditCurrentUser";
 import University from "./components/University";
 import AdminPage from "./components/AdminPage";
+import PulpitProfession from "./components/PulpitProfession";
+import SubjectTeacher from "./components/SubjectTeacher";
 
 /*import "./custom.css";*/
 
@@ -51,6 +53,8 @@ export default () => (
       <Route path={"/Teachers"} element={<Teachers />} />
       <Route path={"/EditCurrentUser"} element={<EditCurrentUser />} />
       <Route path={"/AdminPage"} element={<AdminPage />} />
+      <Route path={"/PulpitProfession"} element={<PulpitProfession />} />
+      <Route path={"/SubjectTeacher"} element={<SubjectTeacher />} />
     </Routes>
   </Layout>
 );

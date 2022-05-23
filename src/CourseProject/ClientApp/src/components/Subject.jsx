@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { forwardRef } from 'react';
 import Grid from '@material-ui/core/Grid'
+import { useLocation, useNavigate } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import AddBox from '@material-ui/icons/AddBox';
@@ -18,6 +19,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import ReadMoreOutlinedIcon from '@mui/icons-material/ReadMoreOutlined';
 import axios from 'axios'
 import Alert from '@material-ui/lab/Alert';
 
@@ -50,11 +52,15 @@ const api = axios.create({
 })
 
 function Pulpit() {
+  const navigate = useNavigate();
+  const search = useLocation().search;
+  var PulpitId = new URLSearchParams(search).get('pulpitId');
+  var PulpitName = new URLSearchParams(search).get('pulpitName');
 
   var columns = [
     {title: "id", field: "id", hidden: true},
     {title: "Subject name", field: "name"},
-    {title: "Pulpit", field:"pulpitName"}
+    {title: "Pulpit", field:"pulpitName", editable:"never"}
   ]
   const [data, setData] = useState([]); //table data
 
@@ -63,13 +69,26 @@ function Pulpit() {
   const [errorMessages, setErrorMessages] = useState([])
 
   useEffect(() => { 
-    api.get("getall")
-        .then(res => {             
-            setData(res.data)
-         })
-         .catch(error=>{
-             console.log("Error")
-         })
+    PulpitId = new URLSearchParams(search).get('pulpitId');
+    if(PulpitId === "" || PulpitId === null)
+    {
+      api.get("getall")
+      .then(res => {             
+          setData(res.data)
+       })
+       .catch(error=>{
+           console.log("Error")
+       })
+    }
+   else{
+    api.get("GetByPulpit?pulpitId="+PulpitId)
+    .then(res => {             
+        setData(res.data)
+     })
+     .catch(error=>{
+         console.log("Error")
+     })
+   }
   }, [])
 
   const handleRowUpdate = (newData, oldData, resolve) => {
@@ -78,12 +97,12 @@ function Pulpit() {
     if(newData.name === ""){
       errorList.push("Please enter subject name")
     }
-    if(newData.pulpitName === ""){
+    if(PulpitName === ""){
         errorList.push("Please enter pulpit name")
       }
 
     if(errorList.length < 1){
-      api.put("/update",{id:oldData.id, name:newData.name, pulpitName:newData.pulpitName})
+      api.put("/update",{id:oldData.id, name:newData.name, pulpitName:PulpitName})
       .then(res => {
         const dataUpdate = [...data];
         const index = oldData.tableData.id;
@@ -114,12 +133,12 @@ function Pulpit() {
     if(newData.name === ""){
       errorList.push("Please enter subject name")
     }
-    if(newData.pulpitName === ""){
+    if(PulpitName === ""){
         errorList.push("Please enter pulpit name")
       }
 
     if(errorList.length < 1){ //no error
-      api.post("create", {name:newData.name,pulpitName:newData.pulpitName})
+      api.post("create", {name:newData.name,pulpitName:PulpitName})
       .then(res => {
         let dataToAdd = [...data];
         dataToAdd.push(newData);

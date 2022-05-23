@@ -48,6 +48,31 @@ namespace CourseProject.Controllers
             return NotFound();
         }
 
+        [HttpGet("professionId")]
+        [Route("GetByProfession")]
+        public async Task<IActionResult> GetByProfession(Guid professionId)
+        {
+            var result = await _repositoryWrapper.Group.FindByConditionAsync(x=>x.ProfessionId.Equals(professionId));
+            var result1 = new List<UpdateGroupDto>();
+            if (result != null)
+            {
+                foreach (var item in result)
+                {
+                    var profession = await _repositoryWrapper.Profession.FindFirstByConditionAsync(x => x.Id.Equals(item.ProfessionId));
+                    var newGroup = new UpdateGroupDto
+                    {
+                        Id = item.Id,
+                        Number = item.Number.ToString(),
+                        Course = item.Course.ToString(),
+                        ProfessionName = profession.Name
+                    };
+                    result1.Add(newGroup);
+                }
+                return new JsonResult(result1);
+            }
+            return NotFound();
+        }
+
         [HttpGet]
         [Route("GetCourses")]
         public async Task<IActionResult> GetCourses()

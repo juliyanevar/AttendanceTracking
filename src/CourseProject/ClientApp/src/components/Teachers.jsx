@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { forwardRef } from "react";
 import Grid from "@material-ui/core/Grid";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import MaterialTable from "material-table";
 import AddBox from "@material-ui/icons/AddBox";
@@ -50,13 +51,17 @@ const api = axios.create({
 });
 
 function Teachers() {
+  const search = useLocation().search;
+  var PulpitId = new URLSearchParams(search).get('pulpitId');
+  var PulpitName = new URLSearchParams(search).get('pulpitName');
+
   var columns = [
     { title: "Id", field: "id", hidden: true },
     { title: "Username", field: "userName" },
     { title: "Email", field: "email" },
     { title: "First Name", field: "firstName" },
     { title: "Last Name", field: "lastName" },
-    { title: "Pulpit Name", field: "pulpitName" },
+    { title: "Pulpit Name", field: "pulpitName"},
   ];
   const [data, setData] = useState([]); //table data
 
@@ -65,6 +70,9 @@ function Teachers() {
   const [errorMessages, setErrorMessages] = useState([]);
 
   useEffect(() => {
+    PulpitId = new URLSearchParams(search).get('pulpitId');
+    if(PulpitId === "" || PulpitId === null)
+    {
     api
       .get("getTeachers")
       .then((res) => {
@@ -74,6 +82,18 @@ function Teachers() {
       .catch((error) => {
         console.log("Error");
       });
+    }
+    else{
+      api
+      .get("GetTeachersByPuplpit?pulpitId="+PulpitId)
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+      })
+      .catch((error) => {
+        console.log("Error");
+      });
+    }
   }, []);
 
   const handleRowUpdate = (newData, oldData, resolve) => {

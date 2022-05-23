@@ -80,7 +80,7 @@ export default class NavMenu extends React.PureComponent<
                         className="text-light"
                         to="/AdminPage"
                       >
-                        Administartion Page
+                        Administration Page
                       </NavLink>
                     </NavItem>
                   </Collapse>
